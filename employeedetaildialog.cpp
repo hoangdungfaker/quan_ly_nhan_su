@@ -21,9 +21,7 @@ EmployeeDetailDialog::EmployeeDetailDialog(NhanVien* nv, QWidget *parent)
     : QDialog(parent), currentEmployee(nv)
 {
     if (!currentEmployee) {
-        QMessageBox::critical(this, "Loi", "Khong co du lieu nhan vien.");
-        reject();
-        return;
+       
     }
 
     setWindowTitle("Quan Ly Chi Tiet: " + QString::fromStdString(currentEmployee->getHoTen()));
