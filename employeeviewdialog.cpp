@@ -35,7 +35,6 @@ EmployeeViewDialog::EmployeeViewDialog(NhanVien& nv, DanhSachNhanVien& dsnv, QWi
     profileButton = new QPushButton(this);
     profileButton->setObjectName("profileButton");
 
-    // --- THAY ĐỔI: Logic lấy chữ cái đầu của TÊN ---
     if(!currentEmployee.getHoTen().empty()) {
         QString qFullName = QString::fromStdString(currentEmployee.getHoTen()).trimmed();
         QStringList parts = qFullName.split(' ', Qt::SkipEmptyParts);
@@ -47,7 +46,6 @@ EmployeeViewDialog::EmployeeViewDialog(NhanVien& nv, DanhSachNhanVien& dsnv, QWi
     } else {
         profileButton->setText("?");
     }
-    // ------------------------------------------
 
     profileMenu = new QMenu(this);
     QAction *viewInfoAction = profileMenu->addAction("Chinh sua thong tin");
@@ -172,7 +170,6 @@ void EmployeeViewDialog::onViewInfo()
 
         profileNameLabel->setText(QString::fromStdString(currentEmployee.getHoTen()));
 
-        // --- THAY ĐỔI: Logic lấy chữ cái đầu của TÊN ---
         if(!currentEmployee.getHoTen().empty()) {
             QString qFullName = QString::fromStdString(currentEmployee.getHoTen()).trimmed();
             QStringList parts = qFullName.split(' ', Qt::SkipEmptyParts);
@@ -182,7 +179,6 @@ void EmployeeViewDialog::onViewInfo()
                 profileButton->setText("?");
             }
         }
-        // ------------------------------------------
 
         delete tabWidget->widget(0);
         tabWidget->insertTab(0, createInfoTab(), "Thong Tin Chung");
@@ -191,12 +187,20 @@ void EmployeeViewDialog::onViewInfo()
     }
 }
 
+// --- SỬA LỖI: Đóng cửa sổ trước khi restart ---
 void EmployeeViewDialog::onLogout()
 {
+    // 1. Đóng cửa sổ hiện tại ngay lập tức
+    this->close();
+
+    // 2. Khởi động tiến trình mới
     QString appPath = QApplication::applicationFilePath();
     QProcess::startDetached(appPath, QApplication::arguments());
+
+    // 3. Thoát tiến trình cũ
     qApp->quit();
 }
+// -------------------------------------------
 
 void EmployeeViewDialog::setupTableWidget(QTableWidget *table, const QStringList &headers)
 {
